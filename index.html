@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>因果传播动图 · Beta Demo</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="vendor/echarts.min.js"></script>
+  <script defer src="data.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell">
+      <span class="brand">Beta Demo</span>
+      <h1>因果传播动图</h1>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="panel toolbar" aria-label="干预设置">
+      <div class="field" id="subject-field" hidden>
+        <label for="subject">受试者</label>
+        <select id="subject"></select>
+      </div>
+      <div class="field">
+        <label for="target">干预变量</label>
+        <select id="target"></select>
+      </div>
+      <div class="field grow">
+        <span class="label" id="level-label">幅度</span>
+        <div id="levels" class="levels" role="radiogroup" aria-labelledby="level-label"></div>
+      </div>
+      <div class="actions">
+        <button id="sweep" type="button" class="primary">播放干预</button>
+        <button id="reset" type="button" class="secondary">重置</button>
+      </div>
+      <p id="note" class="note"></p>
+    </section>
+
+    <div class="workspace">
+      <section class="panel graph-panel" aria-labelledby="graph-heading">
+        <div class="panel-head">
+          <h2 id="graph-heading">因果图 <small>T0 = 基线，Δ = 基线之后的变化</small></h2>
+          <div class="legend" aria-label="图例">
+            <span><i class="swatch up"></i>增加</span>
+            <span><i class="swatch down"></i>减少</span>
+            <span><i class="swatch idle"></i>未变化</span>
+          </div>
+        </div>
+        <div class="graph-scroll">
+          <div id="graph" role="img" aria-label="Beta 因果图：23 个节点分三层（人口学与生活方式、血管与代谢、脑结构），每层分基线 T0 与变化量 Δ 两行。"></div>
+        </div>
+        <div class="timeline">
+          <div class="timeline-head">
+            <h3>传播步骤</h3>
+            <div class="timeline-tools">
+              <span id="step-count" class="count"></span>
+              <button id="play" type="button" class="play-btn">播放传播</button>
+            </div>
+          </div>
+          <div id="steps" class="steps" aria-label="选择传播步骤"></div>
+          <p id="status" class="status" aria-live="polite"></p>
+        </div>
+      </section>
+
+      <section class="panel brain-panel" id="brain-panel" data-view="zoom" aria-labelledby="brain-heading">
+        <div class="panel-head">
+          <h2 id="brain-heading">生成脑图 <small id="brain-subject"></small></h2>
+          <div class="seg" role="radiogroup" aria-label="视图" id="views">
+            <button type="button" role="radio" data-view="zoom" aria-checked="true">脑室</button>
+            <button type="button" role="radio" data-view="ax" aria-checked="false">轴位</button>
+            <button type="button" role="radio" data-view="cor" aria-checked="false">冠状</button>
+          </div>
+        </div>
+        <div class="brains">
+          <figure><img id="img-fact" alt="基线的生成脑图"><figcaption>基线</figcaption></figure>
+          <figure><img id="img-cf" alt="干预后的生成脑图"><figcaption>干预后</figcaption></figure>
+          <figure><img id="img-diff" alt="干预后减基线的差异图"><figcaption>差异（干预后 − 基线） <span class="cbar"><i>暗</i><b></b><i>亮</i></span></figcaption></figure>
+          <figure class="real" id="fig-real" hidden><img id="img-real" alt="真实扫描：随访减基线"><span class="real-hint" id="real-hint">选"时间推移 → 实际随访"时显示</span><figcaption>真实变化（实测随访 − 基线） <span class="cbar"><i>暗</i><b></b><i>亮</i></span></figcaption></figure>
+        </div>
+        <p class="brain-read" id="brain-read"></p>
+        <div class="readout">
+          <h3>干预后的变化</h3>
+          <dl id="readout"></dl>
+          <table class="vt" id="vtable" hidden></table>
+        </div>
+      </section>
+    </div>
+
+    <noscript>请启用 JavaScript 查看因果图动画。</noscript>
+  </main>
+</body>
+</html>
